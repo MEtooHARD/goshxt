@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const { delay, saveScrenShot } = require('./functions');
+const chalk = require('chalk');
 
 module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }) => {
     const browser = await puppeteer.launch({
@@ -41,9 +42,15 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     }
     for (const tr of courseRows) {
         // await delay(150); // just ensure that the table loads properly after accepted dialog
-
         const tds = await tr.$$('td');
-        saveScrenShot(await tds[0].screenshot());
+
+        // reserve for the real add-button(s)
+        /* const add_btn = await tds[0].waitForSelector('input');  
+        await add_btn.click(); */
+
+        const courseID = await page.evaluate(el => el.innerText, await tds[1].$('a'));
+        const courseName = await page.evaluate(el => el.innerText, tds[2]);
+        console.log(`Selected ${chalk.green(courseID)}, \tcourse name: ${chalk.blue(courseName)}`);
     }
 
 
