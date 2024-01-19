@@ -63,5 +63,4 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
         await delay(2000);
         await browser.close();
     }
-
 };
