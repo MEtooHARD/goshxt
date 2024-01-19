@@ -2,7 +2,7 @@
   
 How to use:
 
-#### THIS IS IMPORTANT OTHERWISE IT WILL NOT WORK
+### THIS IS IMPORTANT OTHERWISE IT WILL NOT WORK
 - Befor you start:
   - npm i
 
