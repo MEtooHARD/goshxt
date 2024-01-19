@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
-const { delay } = require('./functions');
+const { delay, saveScrenShot } = require('./functions');
+const fs = require('node:fs');
 
 module.exports = async ({ id = '', pwd = '', closeWhenEnd = false }) => {
     const browser = await puppeteer.launch({
@@ -33,16 +34,40 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false }) => {
     const pre_sched_btn = await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`);
     await pre_sched_btn.click();
 
+    await delay(200); // wait for courses table to load
 
-
-    //  wait a period then close.
-    if (closeWhenEnd) {
-        await delay(5000);
-        for (const page of (await browser.pages())) {
-            await page.close();
-            await delay(2000);
-        }
-        await delay(2000);
-        await browser.close();
+    const courseRows = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
+    courseRows.pop();
+    console.log(`unselected courses: ${courseRows.length}, please check.\n` +
+        `there should be some screenshots of all your unselected courses.`)
+    for (const el of courseRows) {
+        saveScrenShot(await el.screenshot());
     }
+    // const courseRows = await page.$$(' > td > div > div > div > table > tbody > tr')
+    // ContentPlaceHolder1_grd_selects
+    // // console.log(courseRows);
+
+    // for (const row of courseRows) {
+    //     /* const first_td = await page.evaluate(
+    //         el => el.querySelectorAll('td'),
+    //         row
+    //     ); */
+    //     const first_td = await row.$$('td');
+    //     console.log(first_td.length);
+    //     console.log(row)
+    // }
+
+    // //  add-button simulation
+
+    // //  wait a period then close.
+    // if (closeWhenEnd) {
+    //     await delay(5000);
+    //     for (const page of (await browser.pages())) {
+    //         await page.close();
+    //         await delay(2000);
+    //     }
+    //     await delay(2000);
+    //     await browser.close();
+    // }
+
 };
