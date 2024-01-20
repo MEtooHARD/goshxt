@@ -13,4 +13,4 @@ How to use:
 7. before you start, make sure that there're only the courses you want to select in your pre-schedule list. I can't guarantee the functionality if there's any course conflict.  
 8. **node index.js**
   
-### MAKE SURE THAT YOU HAVE DONE STEP 1, 2, 3, 4 and 7
+### MAKE SURE THAT YOU HAVE DONE STEP 1, 2, 3, 4 and 8
