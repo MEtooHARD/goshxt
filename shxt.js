@@ -9,9 +9,7 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     });
     const page = (await browser.newPage()).on('dialog', _ => _.accept());
 
-    const ndhuCours = 'https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx'
-    const url = ndhuCours;
-    await page.goto(url);
+    await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
 
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`)).type(id);
 
@@ -21,16 +19,14 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
 
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`)).click();
 
-    await delay(500); // wait for pre-schedule list table to load
+    await delay(500);
 
-    const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr'));
-    courseRows.shift();
+    const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1);
 
     console.log(`detected unselected courses: ${courseRows.length}, please check.\n` +
         `there should be some screenshots of all your unselected courses. please check`);
 
-    for (const tr of courseRows)
-        saveScrenShot(await tr.screenshot());
+    for (const tr of courseRows) saveScrenShot(await tr.screenshot());
 
     for (const tr of courseRows) {
         // await delay(150); // just ensure that the table loads properly after accepted dialog
