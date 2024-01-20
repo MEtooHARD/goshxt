@@ -7,9 +7,7 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
         headless: !showViewPort,
         defaultViewport: false,
     });
-    const page = (await browser.newPage()).on('dialog', async dialog => {
-        await dialog.accept();
-    });
+    const page = (await browser.newPage()).on('dialog', _ => _.accept());
 
     const ndhuCours = 'https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx'
     const url = ndhuCours;
