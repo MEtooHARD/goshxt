@@ -15,13 +15,13 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     const url = ndhuCours;
     await page.goto(url);
 
-    (await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`)).type(id));
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`)).type(id);
 
-    (await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`)).type(pwd));
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`)).type(pwd);
 
-    (await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`)).click());
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`)).click();
 
-    (await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`)).click());
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`)).click();
 
     await delay(500); // wait for pre-schedule list table to load
 
