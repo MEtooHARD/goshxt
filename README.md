@@ -1,9 +1,16 @@
 # goshxt  
   
 How to use:
-1. go to index.js  
-2. fill your id & password  
-3. see if you want the program to close the browser after shxt  
+
+### THIS IS IMPORTANT OTHERWISE IT WILL NOT WORK  
+
+1. search and install **node.js**  
+2. open a terminal in folder and use **npm i**
+3. open index.js in this project folder  
+4. fill-in your **id** & **password**, which is same as your school ones  
+5. see if you want the program to close the browser after shxt  
+6. see if you want the browser window to show then you can see the progress  
+7. before you start, make sure that there're only the courses you want to select in your pre-schedule list. I can't guarantee the functionality if there's any course conflict.  
+8. in terminal use **node index.js**
   
-Please make sure that you put the **correct password**  
-then you can **node index.js**
+### MAKE SURE THAT YOU HAVE DONE STEP 1, 2, 3, 4 and 8
