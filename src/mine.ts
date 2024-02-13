@@ -35,9 +35,12 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     //
     await delay(500);
 
-    const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1);
+    const selectable = await (await page.$('.courses > tbody > tr > .selectable'));
 
-    console.log(`detected unselected courses: ${courseRows.length}, please check.\n` +
+    console.log(await page.evaluate(el => el?.textContent, selectable));
+    // const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1);
+
+    /* console.log(`detected unselected courses: ${courseRows.length}, please check.\n` +
         `there should be some screenshots of all your unselected courses. please check`);
 
     for (const tr of courseRows) saveScrenShot(await tr.screenshot());
@@ -47,13 +50,13 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
         const tds = await tr.$$('td');
 
         // reserve for the real add-button(s)
-        /* const add_btn = await tds[0].waitForSelector('input');  
-        await add_btn.click(); */
+        // const add_btn = await tds[0].waitForSelector('input');  
+        // await add_btn.click(); 
 
         const courseID = await page.evaluate(el => el?.innerText, await tds[1].$('a'));
         const courseName = await page.evaluate(el => el.innerText, tds[2]);
         console.log(`Selected ${chalk.green(courseID)}, \tcourse name: ${chalk.blue(courseName)}`);
-    }
+    } */
 
     if (closeWhenEnd) {
         await delay(5000);

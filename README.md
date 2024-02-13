@@ -2,6 +2,8 @@
   
 How to use:
 
+##### this README is temprary deprecated
+
 ### THIS IS IMPORTANT OTHERWISE IT WILL NOT WORK  
 
 1. search and install **node.js**  
