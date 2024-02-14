@@ -3,6 +3,8 @@ import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay, saveScrenShot } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 
+const course_ids = ['YY__1010AB', 'GC__6232AL', 'PHYS1020AH', 'CSIE1090AA', 'PHYS1030AD'];
+
 module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }) => {
 
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
@@ -34,10 +36,39 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     //ContentPlaceHolder1_Button3
     //
     await delay(500);
+    //  下半部分 i.e. 未選入之課程
+    const selectable = await page.$('.courses > tbody > tr > .selectable');
+    if (!selectable) process.exit(1);
+    //  search and have some lovin'
+    for (const ID of course_ids) {
+        console.log('doing for ' + ID);
+        //  查詢開放課程
+        const searchOpenedCourse = await selectable.$('#ContentPlaceHolder1_Button3');
+        await (searchOpenedCourse as ElementHandle).click();
+        //  type in course id
+        const courseID_input = await selectable.$('#ContentPlaceHolder1_ed_sno');
+        await (courseID_input as ElementHandle).click({ clickCount: 3 });
+        await (courseID_input as ElementHandle).press('Backspace');
+        await (courseID_input as ElementHandle).type(ID);
+        //  check!
+        const submit = await selectable.$('#ContentPlaceHolder1_btn_ok');
+        await (submit as ElementHandle).click();
 
-    const selectable = await (await page.$('.courses > tbody > tr > .selectable'));
+        await delay(500);
+        const coursetable = await page.$$('#ContentPlaceHolder1_UpdatePanel2 > .gridDiv > div > #ContentPlaceHolder1_grd_subjs > tbody > tr');
+        coursetable.shift();
+        console.log('search result got: ' + chalk.yellow(coursetable.length) + ' option');
 
-    console.log(await page.evaluate(el => el?.textContent, selectable));
+        /*
+        check quota and sign the course 
+         */
+
+        await delay(1000);
+    }
+
+
+    // console.log(await page.evaluate((el) => (el as HTMLElement).innerText, searchOpenedCourse))
+
     // const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1);
 
     /* console.log(`detected unselected courses: ${courseRows.length}, please check.\n` +
