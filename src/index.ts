@@ -8,10 +8,15 @@ const showViewPort = true; //whether to show the browser that you can see how it
 //  select the mode below
 //  SHXT: "rob" the courses
 //  MINE: repeatedly check & try to fill the f'ckn'g p'ssy
+
+//  please fill in the courses you need when using MINE mode
+const course_ids = ['YY__1010AB', 'GC__6232AL', 'PHYS1020AH', 'CSIE1090AA', 'PHYS1030AD'];
+
 require(`./${MODE["MINE"]}`)({
     id: id,
     pwd: pwd,
     closeWhenEnd: closeWhenEnd,
-    showViewPort: showViewPort
+    showViewPort: showViewPort,
+    course_ids: course_ids
 });
 

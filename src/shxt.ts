@@ -2,8 +2,9 @@ import chalk from 'chalk';
 import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay, saveScrenShot } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
+import { ModeOptions } from './config';
 
-module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }) => {
+module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }: ModeOptions) => {
 
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
         console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));

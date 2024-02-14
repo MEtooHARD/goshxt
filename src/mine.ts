@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import puppeteer, { ElementHandle } from 'puppeteer';
-import { delay, saveScrenShot } from './functions/misc';
+import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
+import { ModeOptions } from './config';
 
-const course_ids = ['YY__1010AB', 'GC__6232AL', 'PHYS1020AH', 'CSIE1090AA', 'PHYS1030AD'];
 
-module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }) => {
+module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd = false, course_ids }: ModeOptions) => {
 
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
         console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));
@@ -40,7 +40,7 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
     const selectable = await page.$('.courses > tbody > tr > .selectable');
     if (!selectable) process.exit(1);
     //  search and have some lovin'
-    for (const ID of course_ids) {
+    for (const ID of (course_ids as string[])) {
         console.log('doing for ' + ID);
         //  查詢開放課程
         const searchOpenedCourse = await selectable.$('#ContentPlaceHolder1_Button3');
@@ -60,8 +60,8 @@ module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort 
         console.log('search result got: ' + chalk.yellow(coursetable.length) + ' option');
 
         /*
-        check quota and sign the course 
-         */
+        check quota and sign the course
+        */
 
         await delay(1000);
     }
