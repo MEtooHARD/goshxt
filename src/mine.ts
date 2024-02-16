@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import puppeteer, { ElementHandle } from 'puppeteer';
+import puppeteer, { ElementHandle, Page } from 'puppeteer';
 import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 import { ModeOptions } from './config';
@@ -28,19 +28,27 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
 
     const switchBTN = await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`);
+
+    let pre_selects: string[] = [], course_names: string[] = [];
     if (!(switchBTN instanceof ElementHandle)) {
         console.log(chalk.red('The PASSWORD or ID you provided is wrong.'));
         process.exit(1);
-    } else
+    } else {
         await (switchBTN as ElementHandle<Element>).click();
-    //ContentPlaceHolder1_Button3
-    //
-    await delay(500);
+        await delay(500);
+        const pre_selects_tr = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
+        pre_selects_tr.shift();
+        pre_selects = pre_selects.concat(await get_course_ids(pre_selects_tr, page));
+        course_names = course_names.concat(await get_course_names(pre_selects_tr, page));
+    }
+    console.log('找到預排課程: \n\t' + pre_selects.map((x, i) => x.concat('\t' + course_names[i])).join('\n\t'));
+
     //  下半部分 i.e. 未選入之課程
-    const selectable = await page.$('.courses > tbody > tr > .selectable');
-    if (!selectable) process.exit(1);
+    /* const selectable = await page.$('.courses > tbody > tr > .selectable');
+    if (!selectable) process.exit(1); */
+
     //  search and have some lovin'
-    for (const ID of (course_ids as string[])) {
+    /* for (const ID of (course_ids as string[])) {
         console.log('doing for ' + ID);
         //  查詢開放課程
         const searchOpenedCourse = await selectable.$('#ContentPlaceHolder1_Button3');
@@ -59,35 +67,13 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         coursetable.shift();
         console.log('search result got: ' + chalk.yellow(coursetable.length) + ' option');
 
-        /*
-        check quota and sign the course
-        */
+        
+        //  check quota and sign the course
+        
 
         await delay(1000);
-    }
-
-
-    // console.log(await page.evaluate((el) => (el as HTMLElement).innerText, searchOpenedCourse))
-
-    // const courseRows = (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1);
-
-    /* console.log(`detected unselected courses: ${courseRows.length}, please check.\n` +
-        `there should be some screenshots of all your unselected courses. please check`);
-
-    for (const tr of courseRows) saveScrenShot(await tr.screenshot());
-
-    for (const tr of courseRows) {
-        // await delay(150); // just ensure that the table loads properly after accepted dialog
-        const tds = await tr.$$('td');
-
-        // reserve for the real add-button(s)
-        // const add_btn = await tds[0].waitForSelector('input');  
-        // await add_btn.click(); 
-
-        const courseID = await page.evaluate(el => el?.innerText, await tds[1].$('a'));
-        const courseName = await page.evaluate(el => el.innerText, tds[2]);
-        console.log(`Selected ${chalk.green(courseID)}, \tcourse name: ${chalk.blue(courseName)}`);
     } */
+
 
     if (closeWhenEnd) {
         await delay(5000);
@@ -99,3 +85,22 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         await browser.close();
     }
 };
+
+
+async function get_course_ids(courses: ElementHandle<HTMLTableRowElement>[], page: Page): Promise<string[]> {
+    let result: string[] = [];
+    for (const selection of courses) {
+        const tds = await selection.$$('td');
+        result.push((await page.evaluate(el => el.textContent, tds[1])) as string);
+    }
+    return result;
+}
+
+async function get_course_names(courses: ElementHandle<HTMLTableRowElement>[], page: Page) {
+    let result: string[] = [];
+    for (const selection of courses) {
+        const tds = await selection.$$('td');
+        result.push((await page.evaluate(el => el.textContent, tds[2])) as string);
+    }
+    return result;
+}
