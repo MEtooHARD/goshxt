@@ -36,10 +36,10 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
     } else {
         await (switchBTN as ElementHandle<Element>).click();
         await delay(500);
-        const pre_selects_tr = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
-        pre_selects_tr.shift();
-        pre_selects = pre_selects.concat(await get_course_ids(pre_selects_tr, page));
-        course_names = course_names.concat(await get_course_names(pre_selects_tr, page));
+        const pre_selects_trs = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
+        pre_selects_trs.shift();
+        pre_selects = pre_selects.concat(await get_dedicated_td_string(pre_selects_trs, page, 1));
+        course_names = course_names.concat(await get_dedicated_td_string(pre_selects_trs, page, 2));
     }
     console.log('找到預排課程: \n\t' + pre_selects.map((x, i) => x.concat('\t' + course_names[i])).join('\n\t'));
 
@@ -86,21 +86,11 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
     }
 };
 
-
-async function get_course_ids(courses: ElementHandle<HTMLTableRowElement>[], page: Page): Promise<string[]> {
+async function get_dedicated_td_string(courses: ElementHandle<HTMLTableRowElement>[], page: Page, index: number) {
     let result: string[] = [];
     for (const selection of courses) {
         const tds = await selection.$$('td');
-        result.push((await page.evaluate(el => el.textContent, tds[1])) as string);
-    }
-    return result;
-}
-
-async function get_course_names(courses: ElementHandle<HTMLTableRowElement>[], page: Page) {
-    let result: string[] = [];
-    for (const selection of courses) {
-        const tds = await selection.$$('td');
-        result.push((await page.evaluate(el => el.textContent, tds[2])) as string);
+        result.push((await page.evaluate(el => el.textContent, tds[index])) as string);
     }
     return result;
 }
