@@ -3,6 +3,7 @@ import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 import { ModeOptions } from './type';
+import config from '../config.json';
 
 module.exports = async ({ id = '', pwd = '', showViewPort = true, manual = false }: ModeOptions) => {
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
@@ -29,8 +30,9 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, manual = false
     } else {
         await (switchBTN as ElementHandle<Element>).click();
         await delay(500);
+        const timeLeft = (new Date(config.time)).getTime() - Date.now();
         if (!manual) {
-            const timeLeft = (new Date('to-be-updated')).getTime() - Date.now();
+            console.log(`There\'s ${(timeLeft / 1000 / 60).toFixed(1).toString()} minuts left before the open time. Get ready`);
             setTimeout(async () => {
                 console.log('Found scheduled course(s):');
                 for (const tr of (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1)) {

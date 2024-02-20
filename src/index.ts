@@ -6,7 +6,6 @@ require(`./shxt`)({
     id: config.student_id,
     pwd: config.password,
     manual: config.manual,
-    closeWhenEnd: closeWhenEnd,
     showViewPort: showViewPort,
 });
 
