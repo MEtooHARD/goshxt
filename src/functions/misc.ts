@@ -9,7 +9,16 @@ const saveScrenShot = (data: string | NodeJS.ArrayBufferView) => {
     num++;
 }
 
+interface pwd_id {
+    id: string
+    pwd: string
+}
+const pwd_id_ready = ({ id, pwd }: pwd_id) => {
+    return (Boolean(pwd.length) && Boolean(id.length))
+}
+
 export {
     delay,
-    saveScrenShot
+    saveScrenShot,
+    pwd_id_ready
 }
