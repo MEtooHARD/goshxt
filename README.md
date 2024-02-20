@@ -3,6 +3,7 @@
 How to use:
 
 create a json file `config.json` under src  
+![alt text](https://github.com/[594-666]/[goshxt]/blob/[main]/demo.png?raw=true)  
 in config.json, add:  
 ```
 {
