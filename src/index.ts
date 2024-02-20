@@ -1,7 +1,4 @@
-import { MODE } from "./type";
-
-const id = ''; //your id
-const pwd = ''; //your password
+import config from '../config.json';
 const closeWhenEnd = false; //whether to close the browser after shxt.
 const showViewPort = true; //whether to show the browser that you can see how it's going
 
@@ -12,9 +9,9 @@ const showViewPort = true; //whether to show the browser that you can see how it
 //  please fill in the courses you need when using MINE mode
 const course_ids: string[] = [];
 
-require(`./${MODE["MINE"]}`)({
-    id: id,
-    pwd: pwd,
+require(`./mine`)({
+    id: config.student_id,
+    pwd: config.password,
     closeWhenEnd: closeWhenEnd,
     showViewPort: showViewPort,
     course_ids: course_ids

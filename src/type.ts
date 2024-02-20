@@ -1,4 +1,3 @@
-enum MODE { SHXT = "shxt", MINE = "mine" };
 
 interface ModeOptions {
     id: string,
@@ -9,6 +8,5 @@ interface ModeOptions {
 }
 
 export {
-    MODE,
     ModeOptions
 }

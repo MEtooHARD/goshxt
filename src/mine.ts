@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import puppeteer, { ElementHandle, Page } from 'puppeteer';
+import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 import { ModeOptions } from './type';
@@ -9,77 +9,43 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));
         process.exit(1);
     }
-
     const browser = await puppeteer.launch({
         headless: !showViewPort,
-        defaultViewport: null
+        defaultViewport: null,
+        args: ['--window-size=1920,1080']
     });
 
     const page = (await browser.newPage()).on('dialog', _ => _.accept());
-
     await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
 
-    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`))?.type(id);
-
-    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`))?.type(pwd);
-
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`) as ElementHandle<Node>).type(id);
+    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`) as ElementHandle<Node>).type(pwd);
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
-
     const switchBTN = await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`);
 
-    if (!course_ids.length) {
-        console.log('course_ids not provided. search from re-schedule list.')
-        let course_names: string[] = [];
-        if (!(switchBTN instanceof ElementHandle)) {
-            console.log(chalk.red('The PASSWORD or ID you provided is wrong.'));
-            process.exit(1);
-        } else {
-            await (switchBTN as ElementHandle<Element>).click();
-            await delay(500);
-            const pre_selects_trs = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
-            pre_selects_trs.shift();
-            course_ids = course_ids.concat(await get_dedicated_td_string(pre_selects_trs, page, 1));
-            course_names = course_names.concat(await get_dedicated_td_string(pre_selects_trs, page, 2));
-        }
-        console.log('找到預排課程: \n\t' + course_ids.map((x, i) => x.concat('\t' + course_names[i])).join('\n\t'));
+    if (!(switchBTN instanceof ElementHandle)) {
+        console.log(chalk.red('The PASSWORD or ID you provided is wrong.'));
+        process.exit(1);
+    } else {
+        await (switchBTN as ElementHandle<Element>).click();
+        await delay(500);
+
+        console.log('Found scheduled course(s):');
+        for (const tr of (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1)) {
+            let backend_output = '';
+            const add_btn = await tr.$('input');
+            if (((await page.evaluate(add_btn => (add_btn as HTMLInputElement).className, add_btn)).includes('hide')))
+                backend_output += chalk.yellow('added');
+            else {
+                await (add_btn as ElementHandle<HTMLInputElement>).click();
+                backend_output += chalk.green('new add');
+            }
+            console.log(backend_output + '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[1])) +
+                '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[2])) + '\t');
+        };
+        console.log('\n' + chalk.yellow('hint: the ') + chalk.green('new add ') + chalk.yellow('may be a clashed one.' + '\n'
+            + 'To be on the safe side, please CHECK AGAIN all the courses you want are added correctly.'));
     }
-
-    //  下半部分 i.e. 未選入之課程
-    const selectable = await page.$('.courses > tbody > tr > .selectable');
-    if (!selectable) process.exit(1);
-
-    //  search and have some lovin'
-    for (const ID of (course_ids as string[])) {
-        console.log('doing for ' + ID);
-        //  查詢開放課程
-        const searchOpenedCourse = await selectable.$('#ContentPlaceHolder1_Button3');
-        await (searchOpenedCourse as ElementHandle).click();
-        //  type in course id
-        const courseID_input = await selectable.$('#ContentPlaceHolder1_ed_sno');
-        await (courseID_input as ElementHandle).click({ clickCount: 3 });
-        await (courseID_input as ElementHandle).press('Backspace');
-        await (courseID_input as ElementHandle).type(ID);
-        //  check!
-        const submit = await selectable.$('#ContentPlaceHolder1_btn_ok');
-        await (submit as ElementHandle).click();
-
-        await delay(100);
-        const coursetable = await page.$$('#ContentPlaceHolder1_UpdatePanel2 > .gridDiv > div > #ContentPlaceHolder1_grd_subjs > tbody > tr');
-        coursetable.shift();
-        if (!coursetable.length) {
-            await delay(500);
-            const coursetable = await page.$$('#ContentPlaceHolder1_UpdatePanel2 > .gridDiv > div > #ContentPlaceHolder1_grd_subjs > tbody > tr');
-            coursetable.shift();
-        }
-        console.log('search result got: ' + chalk.yellow(coursetable.length) + ' option');
-
-
-        //  check quota and sign the course
-
-
-        // await delay(1000);
-    }
-
 
     if (closeWhenEnd) {
         await delay(5000);
@@ -91,15 +57,3 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         await browser.close();
     }
 };
-
-async function get_dedicated_td_string(courses: ElementHandle<HTMLTableRowElement>[], page: Page, index: number) {
-    let result: string[] = [];
-    for (const selection of courses) {
-        const tds = await selection.$$('td');
-        result.push((await page.evaluate(el => el.textContent, tds[index])) as string);
-    }
-    return result;
-}
-async function searchCourse(id: string) {
-    
-}
