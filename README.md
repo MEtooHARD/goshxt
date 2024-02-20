@@ -1,6 +1,4 @@
 # goshxt  
-  
-How to use:  
 download and install `node.js`  
 
 create `config.json` under `src`  
@@ -33,13 +31,14 @@ Open a terminal in the folder of this repo
 You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` (only available in windows)  
 Or just use vscode's terminal  
 ### run `npm i`
-### run `npm start`
-  
-  
+### run `npm start`  
+
+---  
 see https://youtu.be/e-rWAkvfzcU  
-credit: 
-- code: MEtooHARD
-- video: ToiletKing
+
+# **Contributor:**
+- ## **code:** [MEtooHARD](https://github.com/MEtooHARD)
+- ## **video:** [ToiletKing](https://www.youtube.com/@ToiletKing)
 
 for any noun you don't know, just google or ask your csie classmates(though they might not know those either)  
 任何看不懂的名詞請google或找個資工系的同學問(他們可能也不會就是了)
