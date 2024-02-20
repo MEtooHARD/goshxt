@@ -64,7 +64,7 @@ This script will only login and lead you to the pre-schedule page.
 All the dialogs will be accepted immediately.  
 So you can just quickly go through the courses and add them, no need to click the noisy dialogs.  
 ![alt text](https://github.com/594-666/goshxt/blob/main/dialog.png?raw=true)  
-(but as a cost, you won't be able to immediately know whether the course is successfull added)  
+(as the trade off, you won't be able to immediately know whether the course is successfull added)  
 
 ---  
 
