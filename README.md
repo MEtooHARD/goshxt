@@ -12,3 +12,5 @@ in config.json, add:
 }
 ```
 and fill in your id & password  
+then open a terminal in the folder of this repo  
+run `npm start`
