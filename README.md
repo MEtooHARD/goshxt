@@ -1,39 +1,69 @@
 # goshxt  
+
 download and install `node.js`  
 
-create `config.json` under `src`  
+## Prepare for some necessary configurations:
+
+1. create `config.json` under `src`  
 ![alt text](https://github.com/594-666/goshxt/blob/main/demo.png?raw=true)  
-in `config.json`, add:  
+2. in `config.json`, add:  
+
 ```
 {
     "student_id": "",
     "password": "",
     "manual": false,
-    "time": "YYYY-MM-DD hh:mm"
+    "time": "YYYY-MM-DD hh:mm",
+    "showViewPort": true
 }
-```
-### fill in `student_id` & `password` and replace `YYYY-MM-DD hh:mm` with the correct time
+```  
 
-This script can add all the courses in your pre-schedule list  
+3. fill in `student_id` & `password`  
+4. replace `YYYY-MM-DD hh:mm` with the correct date and time  
+5. `showViewPort`: `true` => show browser window, `false` => vice versa  
 
-You can set `manual` to `true` if you want to click the courses by yourself 
-- If you do that, this script will lead you to the pre-schedule page then you can start adding  
-all the dialogs will be immediately accepted, i.e., you won't need to worry about the tiny pop-up block
-  
-- If you leave `manual` as false  
-please make sure all your pre-scheduled courses have no clashes  
-this script will wait until the open time.  
-Tt won't automatically refresh.  
-So, just run this script at most 10 mins before the open time, in case, you know : )  
+`manual` option will be explained later  
 
-### now you can start running this script
+---
+### Almost there!
+
 Open a terminal in the folder of this repo  
 You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` (only available in windows)  
 Or just use vscode's terminal  
-### run `npm i`
-### run `npm start`  
+
+### Execute:  
+
+1. ### run `npm i`  
+2. ### run `npm start`
+---  
+
+### Code flow explained  
+
+This script will first lead you to the website and login with the `id` and `password` you provided.  
+Then it'll see whether the moment you run this script is before the system open.  
+If it is, The script will run the course adding part right after the system is opened.  
+If not, it'll add immediately.  
+And there's a listener for `'dialog'` event, this script will accept any pop-up dialogs.
+
+**Important:**  
+this script will simply try to click every available ![alt text](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) button from your pre-schedule list  
+**For the best-case, please *not to* make any *clashes* in your pre-schedule list.**  
+
+---
+
+### The `manual` option
+
+- `false`(default):  
+This script will add the courses for you.
+- `true`  
+This script will only login and lead you to the pre-schedule page.  
+All the dialogs will be accepted immediately.  
+So you can just quickly go through the courses and add them, no need to click the noisy dialogs.  
+![alt text](https://github.com/594-666/goshxt/blob/main/dialog.png?raw=true)  
+(but as a cost, you won't be able to immediately know whether the course is successfull added)  
 
 ---  
+
 see https://youtu.be/e-rWAkvfzcU  
 
 # **Contributor:**
