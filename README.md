@@ -39,7 +39,7 @@ Or just use vscode's terminal
 see https://youtu.be/e-rWAkvfzcU  
 credit: 
 - code: MEtooHARD
-- video: ToiletKing
+- video: [ToiletKing](https://www.youtube.com/@ToiletKing)
 
 for any noun you don't know, just google or ask your csie classmates(though they might not know those either)  
 任何看不懂的名詞請google或找個資工系的同學問(他們可能也不會就是了)
