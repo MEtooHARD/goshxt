@@ -4,7 +4,7 @@ download and install `node.js`
 
 ### Prepare for some necessary configurations:
 
-1. create `config.json` 
+1. create `config.json`  
 ![alt text](https://github.com/594-666/goshxt/blob/main/demo.png?raw=true)  
 2. in `config.json`, add:  
 
