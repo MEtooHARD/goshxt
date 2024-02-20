@@ -24,7 +24,7 @@ all the dialogs will be immediately accepted, i.e., you won't need to worry abou
 - If you leave `manual` as false  
 please make sure all your pre-scheduled courses have no clashes  
 this script will wait until the open time.  
-Tt won't auto matically refresh.  
+Tt won't automatically refresh.  
 So, just run this script at most 10 mins before the open time, in case, you know : )  
 
 ### now you can start running this script
