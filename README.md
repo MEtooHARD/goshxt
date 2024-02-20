@@ -1,6 +1,7 @@
 # goshxt  
   
-How to use:
+How to use:  
+download and install `node.js`  
 
 create `config.json` under `src`  
 ![alt text](https://github.com/594-666/goshxt/blob/main/demo.png?raw=true)  
@@ -31,4 +32,5 @@ So, just run this script at most 10 mins before the open time, in case, you know
 Open a terminal in the folder of this repo  
 You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` (only available in windows)  
 Or just use vscode's terminal  
+### run `npm i`
 ### run `npm start`
