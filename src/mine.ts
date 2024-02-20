@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import puppeteer, { ElementHandle, Page } from 'puppeteer';
 import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
-import { ModeOptions } from './config';
+import { ModeOptions } from './type';
 
 module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd = false, course_ids = [] }: ModeOptions) => {
     if (!pwd_id_ready({ pwd: pwd, id: id })) {

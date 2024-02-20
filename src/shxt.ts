@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay, saveScrenShot } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
-import { ModeOptions } from './config';
+import { ModeOptions } from './type';
 
 module.exports = async ({ id = '', pwd = '', closeWhenEnd = false, showViewPort = true }: ModeOptions) => {
 

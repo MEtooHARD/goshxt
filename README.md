@@ -2,6 +2,17 @@
   
 How to use:
 
+create a json file `config.json` under src  
+in config.json, add:  
+```
+{
+    "student_id": "",
+    "password": ""
+}
+```
+and fill in your id & password
+
+
 ##### this README is temprary deprecated
 
 ### THIS IS IMPORTANT OTHERWISE IT WILL NOT WORK  

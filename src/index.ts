@@ -1,4 +1,4 @@
-import { MODE } from "./config";
+import { MODE } from "./type";
 
 const id = ''; //your id
 const pwd = ''; //your password
