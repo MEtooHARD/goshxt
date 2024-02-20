@@ -34,7 +34,10 @@ Or just use vscode's terminal
 ### Execute:  
 
 1. ### run `npm i`  
-2. ### run `npm start`
+2. ### run `npm start`  
+
+![alt text](https://github.com/594-666/goshxt/blob/main/terminal.png?raw=true)  
+
 ---  
 
 ### Code flow explained  
@@ -64,7 +67,7 @@ So you can just quickly go through the courses and add them, no need to click th
 
 ---  
 
-see https://youtu.be/e-rWAkvfzcU  
+###  see https://youtu.be/e-rWAkvfzcU  
 
 # **Contributor:**
 - ## **code:** [MEtooHARD](https://github.com/MEtooHARD)
