@@ -1,7 +1,7 @@
 import { MODE } from "./config";
 
-const id = '411221308'; //your id
-const pwd = '940Chiu301'; //your password
+const id = ''; //your id
+const pwd = ''; //your password
 const closeWhenEnd = false; //whether to close the browser after shxt.
 const showViewPort = true; //whether to show the browser that you can see how it's going
 
@@ -10,7 +10,7 @@ const showViewPort = true; //whether to show the browser that you can see how it
 //  MINE: repeatedly check & try to fill the f'ckn'g p'ssy
 
 //  please fill in the courses you need when using MINE mode
-const course_ids = ['YY__1010AB', 'GC__6232AL', 'PHYS1020AH', 'CSIE1090AA', 'PHYS1030AD'];
+const course_ids: string[] = [];
 
 require(`./${MODE["MINE"]}`)({
     id: id,

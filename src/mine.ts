@@ -4,9 +4,7 @@ import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 import { ModeOptions } from './config';
 
-
-module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd = false, course_ids }: ModeOptions) => {
-
+module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd = false, course_ids = [] }: ModeOptions) => {
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
         console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));
         process.exit(1);
@@ -29,26 +27,29 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
 
     const switchBTN = await page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`);
 
-    let pre_selects: string[] = [], course_names: string[] = [];
-    if (!(switchBTN instanceof ElementHandle)) {
-        console.log(chalk.red('The PASSWORD or ID you provided is wrong.'));
-        process.exit(1);
-    } else {
-        await (switchBTN as ElementHandle<Element>).click();
-        await delay(500);
-        const pre_selects_trs = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
-        pre_selects_trs.shift();
-        pre_selects = pre_selects.concat(await get_dedicated_td_string(pre_selects_trs, page, 1));
-        course_names = course_names.concat(await get_dedicated_td_string(pre_selects_trs, page, 2));
+    if (!course_ids.length) {
+        console.log('course_ids not provided. search from re-schedule list.')
+        let course_names: string[] = [];
+        if (!(switchBTN instanceof ElementHandle)) {
+            console.log(chalk.red('The PASSWORD or ID you provided is wrong.'));
+            process.exit(1);
+        } else {
+            await (switchBTN as ElementHandle<Element>).click();
+            await delay(500);
+            const pre_selects_trs = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
+            pre_selects_trs.shift();
+            course_ids = course_ids.concat(await get_dedicated_td_string(pre_selects_trs, page, 1));
+            course_names = course_names.concat(await get_dedicated_td_string(pre_selects_trs, page, 2));
+        }
+        console.log('找到預排課程: \n\t' + course_ids.map((x, i) => x.concat('\t' + course_names[i])).join('\n\t'));
     }
-    console.log('找到預排課程: \n\t' + pre_selects.map((x, i) => x.concat('\t' + course_names[i])).join('\n\t'));
 
     //  下半部分 i.e. 未選入之課程
-    /* const selectable = await page.$('.courses > tbody > tr > .selectable');
-    if (!selectable) process.exit(1); */
+    const selectable = await page.$('.courses > tbody > tr > .selectable');
+    if (!selectable) process.exit(1);
 
     //  search and have some lovin'
-    /* for (const ID of (course_ids as string[])) {
+    for (const ID of (course_ids as string[])) {
         console.log('doing for ' + ID);
         //  查詢開放課程
         const searchOpenedCourse = await selectable.$('#ContentPlaceHolder1_Button3');
@@ -62,17 +63,22 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         const submit = await selectable.$('#ContentPlaceHolder1_btn_ok');
         await (submit as ElementHandle).click();
 
-        await delay(500);
+        await delay(100);
         const coursetable = await page.$$('#ContentPlaceHolder1_UpdatePanel2 > .gridDiv > div > #ContentPlaceHolder1_grd_subjs > tbody > tr');
         coursetable.shift();
+        if (!coursetable.length) {
+            await delay(500);
+            const coursetable = await page.$$('#ContentPlaceHolder1_UpdatePanel2 > .gridDiv > div > #ContentPlaceHolder1_grd_subjs > tbody > tr');
+            coursetable.shift();
+        }
         console.log('search result got: ' + chalk.yellow(coursetable.length) + ' option');
 
-        
-        //  check quota and sign the course
-        
 
-        await delay(1000);
-    } */
+        //  check quota and sign the course
+
+
+        // await delay(1000);
+    }
 
 
     if (closeWhenEnd) {
@@ -93,4 +99,7 @@ async function get_dedicated_td_string(courses: ElementHandle<HTMLTableRowElemen
         result.push((await page.evaluate(el => el.textContent, tds[index])) as string);
     }
     return result;
+}
+async function searchCourse(id: string) {
+    
 }
