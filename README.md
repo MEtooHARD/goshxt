@@ -1,6 +1,7 @@
 # goshxt  
   
-How to use:
+How to use:  
+download and install `node.js`  
 
 create `config.json` under `src`  
 ![alt text](https://github.com/594-666/goshxt/blob/main/demo.png?raw=true)  
@@ -23,10 +24,13 @@ all the dialogs will be immediately accepted, i.e., you won't need to worry abou
   
 - If you leave `manual` as false  
 please make sure all your pre-scheduled courses have no clashes  
-this script will wait until the open time, it won't auto matically refresh, so run this script at most 10 mins before the open time, in case, you know : )  
+this script will wait until the open time.  
+Tt won't automatically refresh.  
+So, just run this script at most 10 mins before the open time, in case, you know : )  
 
 ### now you can start running this script
 Open a terminal in the folder of this repo  
 You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` (only available in windows)  
 Or just use vscode's terminal  
+### run `npm i`
 ### run `npm start`
