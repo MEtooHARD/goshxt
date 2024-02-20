@@ -34,3 +34,9 @@ You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` (o
 Or just use vscode's terminal  
 ### run `npm i`
 ### run `npm start`
+  
+  
+see https://youtu.be/e-rWAkvfzcU
+credit: 
+- code: MEtooHARD
+- video: ToiletKing
