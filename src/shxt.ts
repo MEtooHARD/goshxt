@@ -4,7 +4,7 @@ import { delay } from './functions/misc';
 import { pwd_id_ready } from './functions/prepare';
 import { ModeOptions } from './type';
 
-module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd = false, manual = false }: ModeOptions) => {
+module.exports = async ({ id = '', pwd = '', showViewPort = true, manual = false }: ModeOptions) => {
     if (!pwd_id_ready({ pwd: pwd, id: id })) {
         console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));
         process.exit(1);
@@ -30,32 +30,24 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, closeWhenEnd =
         await (switchBTN as ElementHandle<Element>).click();
         await delay(500);
         if (!manual) {
-            console.log('Found scheduled course(s):');
-            for (const tr of (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1)) {
-                let backend_output = '';
-                const add_btn = await tr.$('input');
-                if (((await page.evaluate(add_btn => (add_btn as HTMLInputElement).className, add_btn)).includes('hide')))
-                    backend_output += chalk.yellow('added');
-                else {
-                    await (add_btn as ElementHandle<HTMLInputElement>).click();
-                    backend_output += chalk.green('new add');
-                }
-                console.log(backend_output + '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[1])) +
-                    '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[2])) + '\t');
-            };
-            console.log('\n' + chalk.yellow('hint: the ') + chalk.green('new add ') + chalk.yellow('may be a clashed one.' + '\n'
-                + 'To be on the safe side, please CHECK AGAIN all the courses you want are added correctly.'));
+            const timeLeft = (new Date('to-be-updated')).getTime() - Date.now();
+            setTimeout(async () => {
+                console.log('Found scheduled course(s):');
+                for (const tr of (await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr')).slice(1)) {
+                    let backend_output = '';
+                    const add_btn = await tr.$('input');
+                    if (((await page.evaluate(add_btn => (add_btn as HTMLInputElement).className, add_btn)).includes('hide')))
+                        backend_output += chalk.yellow('added');
+                    else {
+                        await (add_btn as ElementHandle<HTMLInputElement>).click();
+                        backend_output += chalk.green('new add');
+                    }
+                    console.log(backend_output + '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[1])) +
+                        '\t' + (await page.evaluate(x => x?.innerText, (await tr.$$('td'))[2])) + '\t');
+                };
+                console.log('\n' + chalk.yellow('hint: the ') + chalk.green('new add ') + chalk.yellow('may be a clashed one.' + '\n'
+                    + 'To be on the safe side, please CHECK AGAIN all the courses you want are added correctly.'));
+            }, timeLeft > 0 ? timeLeft : 0);
         }
     }
-
-    if (closeWhenEnd) {
-        await delay(5000);
-        for (const page of (await browser.pages())) {
-            await page.close();
-            await delay(1000);
-        }
-        await delay(2000);
-        await browser.close();
-    }
-
 };
