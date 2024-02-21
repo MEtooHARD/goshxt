@@ -44,7 +44,7 @@ Or just use vscode's terminal
 ### Code flow explained  
 
 This script will first lead you to the website and login with the `id` and `password` you provided.  
-And will switch to the ![pre schedule btn](https://github.com/594-666/goshxt/blob/main/pre_schedule_btn.png?raw=true) list page.  
+And will switch to the ![pre schedule btn](https://github.com/594-666/goshxt/blob/main/pre_schedule.png?raw=true) list page.  
 Then it'll see whether the moment you run this script is before the system open.  
 If it is, The script will run the course adding part right after the system is opened.  
 If not, it'll start adding immediately.  
