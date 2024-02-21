@@ -21,7 +21,7 @@ module.exports = async ({ id = '', pwd = '', showViewPort = true, manual = false
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`) as ElementHandle<Node>).type(id);
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`) as ElementHandle<Node>).type(pwd);
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
-    page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`, { timeout: 2000 })
+    page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`, { timeout: 5000 })
         .then(async switchBTN => {
             await (switchBTN as ElementHandle<Element>).click();
             const timeLeft = (new Date(config.time)).getTime() - Date.now();
