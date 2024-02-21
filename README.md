@@ -68,8 +68,7 @@ So you can just quickly go through the courses and add them, no need to click th
 
 ---  
 
-###  see https://youtu.be/e-rWAkvfzcU  
-
+###  see https://youtu.be/va9Spg4j-Mg  
 # **Contributor:**
 - ## **code:** [MEtooHARD](https://github.com/MEtooHARD)
 - ## **video:** [ToiletKing](https://www.youtube.com/@ToiletKing)
