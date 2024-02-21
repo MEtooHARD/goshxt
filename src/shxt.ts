@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import puppeteer, { ElementHandle } from 'puppeteer';
-import { delay, pwd_id_ready } from './functions/misc';
+import { delay } from './functions/misc';
 import { ModeOptions } from './type';
 import config from '../config.json';
 
