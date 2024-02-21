@@ -5,19 +5,14 @@ import { ModeOptions } from './type';
 import config from '../config.json';
 
 module.exports = async ({ id = '', pwd = '', showViewPort = true, manual = false }: ModeOptions) => {
-    if (!pwd_id_ready({ pwd: pwd, id: id })) {
-        console.log(chalk.red('PLEASE FILL IN YOUR ID & PASSWORD FIRST'));
-        process.exit(1);
-    }
     const browser = await puppeteer.launch({
         headless: !showViewPort,
         defaultViewport: null,
         args: ['--window-size=1920,1080']
     });
-
     const page = (await browser.newPage()).on('dialog', _ => _.accept());
-    await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
 
+    await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`) as ElementHandle<Node>).type(id);
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`) as ElementHandle<Node>).type(pwd);
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
