@@ -13,6 +13,7 @@ download and install `node.js`
     "student_id": "",
     "password": "",
     "manual": false,
+    "dialog_delay_accept": 0,
     "time": "YYYY-MM-DD hh:mm",
     "showViewPort": true
 }
@@ -22,7 +23,7 @@ download and install `node.js`
 4. replace `YYYY-MM-DD hh:mm` with the correct date and time  
 5. `showViewPort`: `true` => show browser window, `false` => vice versa  
 
-`manual` option will be explained later  
+`manual` and `dialog_delay_accept` will be explained later.  
 
 ---
 ### Almost there!
@@ -65,6 +66,9 @@ All the dialogs will be accepted immediately.
 So you can just quickly go through the courses and add them, no need to click the noisy dialogs.  
 ![alt text](https://github.com/594-666/goshxt/blob/main/dialog.png?raw=true)  
 (as the trade off, you won't be able to immediately know whether the course is successfull added)  
+
+### The `dialog_delay_accept` option  
+- This option is a number, when `manual` is true, the page will accept the dialog after the number you given (milliseconds). Which allows you to see the dialog message.  
 
 ---  
 
