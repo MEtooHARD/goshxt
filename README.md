@@ -65,7 +65,7 @@ This script will only login and lead you to the pre-schedule page.
 All the dialogs will be accepted immediately.  
 So you can just quickly go through the courses and add them, no need to click the noisy dialogs.  
 ![alt text](https://github.com/594-666/goshxt/blob/main/dialog.png?raw=true)  
-(as the trade off, you won't be able to immediately know whether the course is successfull added)  
+(as the trade off, you won't be able to immediately know whether the course is successfully added)  
 
 ### The `dialog_delay_accept` option  
 - This option is a number, when `manual` is true, the page will accept the dialog after the number you given (milliseconds). Which allows you to see the dialog message.  
