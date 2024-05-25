@@ -15,13 +15,15 @@ download and install `node.js`
     "manual": false,
     "dialog_delay_accept": 0,
     "time": "YYYY-MM-DD hh:mm",
-    "showViewPort": true
+    "showViewPort": true,
+    "earthquakeNotice": true
 }
 ```  
 
 3. fill in `student_id` & `password`  
 4. replace `YYYY-MM-DD hh:mm` with the correct date and time  
 5. `showViewPort`: `true` => show browser window, `false` => vice versa  
+6. the `earthquakeNotice`. since the 0403 earthquake, the system is now with an extra layer of the notice. leave with `true` if the layer is still there. otherwise `false`. (it can cause at most additional 2 seconds if you left it as `true` if the layer is remov)
 
 `manual` and `dialog_delay_accept` will be explained later.  
 
