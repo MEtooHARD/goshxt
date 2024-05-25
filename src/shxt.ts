@@ -17,11 +17,28 @@ module.exports = async () => {
         });
 
     await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
+
+    try {
+        if (config.earthquakeNotice)
+            await (await page.waitForXPath(`//*[@id="enterButton"]`, { timeout: 2000 }) as ElementHandle<Element>).click();
+    } catch (e) { }
+
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`) as ElementHandle<Node>).type(config.student_id);
+
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`) as ElementHandle<Node>).type(config.password);
+
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
+
+    /* try {
+        if (config.earthquakeNotice)
+            await (await page.waitForXPath(`//*[@id="enterButton"]`, { timeout: 2000 }) as ElementHandle<Element>).click();
+    } catch (e) { } */
+
+    console.log('a')
     page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`, { timeout: 5000 })
         .then(async switchBTN => {
+            console.log('b')
+
             await (switchBTN as ElementHandle<Element>).click();
             const timeLeft = (new Date(config.time)).getTime() - Date.now();
             let courses: ElementHandle<HTMLTableRowElement>[] = [], waiting_try_count = 0, course_handled = 0;
