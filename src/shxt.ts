@@ -29,11 +29,6 @@ module.exports = async () => {
 
     await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
 
-    /* try {
-        if (config.earthquakeNotice)
-            await (await page.waitForXPath(`//*[@id="enterButton"]`, { timeout: 2000 }) as ElementHandle<Element>).click();
-    } catch (e) { } */
-
     page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`, { timeout: 5000 })
         .then(async switchBTN => {
             await (switchBTN as ElementHandle<Element>).click();
@@ -45,8 +40,8 @@ module.exports = async () => {
                 courses = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
             } while (courses.length <= 1 && waiting_try_count < 100);
             console.log('Found ' + chalk.yellow(courses.length - 1) + ' courses, please check.');
+            console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
             if (!config.manual) {
-                console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
                 setTimeout(async () => {
                     console.log('Found scheduled course(s):');
                     courses.slice(1).forEach(async tr => {
@@ -72,4 +67,6 @@ module.exports = async () => {
             console.log(chalk.red('The PASSWORD or ID you provided was wrong.'));
             process.exit(1);
         });
+
+    await delay(5 * 60 * 1000);
 }
