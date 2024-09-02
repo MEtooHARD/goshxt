@@ -54,7 +54,7 @@ If not, it'll start adding immediately.
 And there's a listener for `'dialog'` event, this script will accept any dialogs.
 
 **Important:**  
-this script will simply try clicking every available ![alt text](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) button from your pre-schedule list  
+this script simply try clicking every available ![alt text](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) button from your pre-schedule list  
 **For the best case, please *DO NOT* make any *clashes* in your pre-schedule list.**  
 
 ---
