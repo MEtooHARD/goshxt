@@ -3,33 +3,29 @@ import puppeteer, { ElementHandle } from 'puppeteer';
 import { delay } from './functions/misc';
 import config from '../config.json';
 
-module.exports = async () => {
+export const shxt = async () => {
     const browser = await puppeteer.launch({
-        headless: !config.showViewPort,
+        headless: config.headless,
         defaultViewport: null,
         args: ['--window-size=1920,1080']
     });
     const page = (await browser.newPage())
-        .on('dialog', async _ => {
-            if (config.manual && config.dialog_delay_accept > 0)
-                await delay(config.dialog_delay_accept);
-            _.accept();
-        });
+        .on('dialog', _ => _.accept());
 
     await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
 
-    try {
-        if (config.earthquakeNotice)
-            await (await page.waitForXPath(`//*[@id="enterButton"]`, { timeout: 2000 }) as ElementHandle<Element>).click();
-    } catch (e) { }
+    // try {
+    //     if (config.earthquakeNotice)
+    //         await (await page.waitForSelector(`#enterButton`, { timeout: 2000 }) as ElementHandle<Element>).click();
+    // } catch (e) { }
 
-    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_StudNo"]`) as ElementHandle<Node>).type(config.student_id);
+    await (await page.waitForSelector(`#ContentPlaceHolder1_ed_StudNo`) as ElementHandle<Node>).type(config.student_id);
 
-    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_ed_pass"]`) as ElementHandle<Node>).type(config.password);
+    await (await page.waitForSelector(`#ContentPlaceHolder1_ed_pass`) as ElementHandle<Node>).type(config.password);
 
-    await (await page.waitForXPath(`//*[@id="ContentPlaceHolder1_BtnLoginNew"]`) as ElementHandle<Element>).click();
+    await (await page.waitForSelector(`#ContentPlaceHolder1_BtnLoginNew`) as ElementHandle<Element>).click();
 
-    page.waitForXPath(`//*[@id="ContentPlaceHolder1_Button7"]`, { timeout: 5000 })
+    page.waitForSelector(`#ContentPlaceHolder1_Button7`, { timeout: 5000 })
         .then(async switchBTN => {
             await (switchBTN as ElementHandle<Element>).click();
             const timeLeft = (new Date(config.time)).getTime() - Date.now();
@@ -41,7 +37,7 @@ module.exports = async () => {
             } while (courses.length <= 1 && waiting_try_count < 100);
             console.log('Found ' + chalk.yellow(courses.length - 1) + ' courses, please check.');
             console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
-            if (!config.manual) {
+            if (!Boolean(config.manual)) {
                 setTimeout(async () => {
                     console.log('Found scheduled course(s):');
                     courses.slice(1).forEach(async tr => {

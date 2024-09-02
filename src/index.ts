@@ -1,1 +1,3 @@
-require(`./shxt`)();
+import { shxt } from "./shxt";
+
+shxt();
