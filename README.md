@@ -48,7 +48,7 @@ Or just use vscode's terminal
 
 This script will first lead you to the website and login with the `id` and `password` you provided.  
 Then switch to the ![pre schedule btn](https://github.com/594-666/goshxt/blob/main/pre_schedule.png?raw=true) page.  
-Tt'll see if the moment you run this script is before the system open.  
+It'll see if the moment you run this script is before the system open.  
 If it is, The script will run the course adding part right after the system opened.  
 If not, it'll start adding immediately.  
 And there's a listener for `'dialog'` event, this script will accept any dialogs.
