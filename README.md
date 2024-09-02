@@ -36,6 +36,7 @@ You can simply use vscode to open the folder and press `shift` + `ctrl` + `C` or
 Or just use vscode's terminal  
 
 ### Execute:  
+> ### run `npm i` (npm install)
 
 > ### run `npm start`  
 
