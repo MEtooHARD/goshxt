@@ -21,7 +21,7 @@ What are these attributes used for?
 -  `headless`: any falsy/truthy value in javascript
    -  true: the browser window will not present, vice versa.
 - `YYYY-MM-DD hh:mm`: the time the systems opens
-  - this can actually be any valid string if you know how to do, see: [Date.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse)
+  - this can actually be in any valid format if you know how to do, see: [Date.parse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse)
   - otherwise, please make sure the format fits.
 
 - `manual`: will be explained later.  
