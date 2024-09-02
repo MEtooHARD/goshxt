@@ -35,7 +35,7 @@ export const shxt = async () => {
                 waiting_try_count++;
                 courses = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
             } while (courses.length <= 1 && waiting_try_count < 100);
-            console.log('Found ' + chalk.yellow(courses.length - 1) + ' courses, please check.');
+            console.log('Found ' + chalk.green(courses.length - 1) + ' courses, please check.');
             console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
             if (!Boolean(config.manual)) {
                 setTimeout(async () => {
