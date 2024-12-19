@@ -10,7 +10,7 @@
 {
     "student_id": "",
     "password": "",
-    "fullauto": false,
+    "fullauto": true,
     "time": "2024-12-20 12:30"
 }
 ```  
