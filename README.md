@@ -10,9 +10,8 @@
 {
     "student_id": "",
     "password": "",
-    "manual": false,
-    "time": "YYYY-MM-DD hh:mm",
-    "headless": true
+    "fullauto": false,
+    "time": "2024-12-20 12:30"
 }
 ```  
 What are these attributes used for?
