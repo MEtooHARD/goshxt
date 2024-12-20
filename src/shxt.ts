@@ -1,12 +1,42 @@
 import chalk from 'chalk';
-import puppeteer, { ElementHandle } from 'puppeteer';
+import puppeteer, { ElementHandle, Page } from 'puppeteer';
 import { delay } from './functions/misc';
 import config from '../config.json';
 
-export const shxt = async () => {
-    console.log('if the program doesn\'t start right after the course system starts, just click the button on your own.');
-    console.log('the reason is that I can\'t sync with the server so this program don\'t actually .');
+let HasCourses = false;
 
+const checkCourseAddBtn = async (page: Page) => {
+    let attemptCount = 0;
+    let btnExist = false;
+    do {
+        /* reload pre sche course */
+        const PreSchedPageBTN = await page.$('#ContentPlaceHolder1_HyperLink6');
+        await PreSchedPageBTN?.click();
+        await delay(300);
+
+        const SchedPageBTN = await page.$('#ContentPlaceHolder1_HyperLink1');
+        await SchedPageBTN?.click();
+        await delay(200);
+        /* reload pre sche course */
+
+        const CoursePageBtn = await page.waitForSelector(`#ContentPlaceHolder1_Button7`, { timeout: 5000 });
+        await (CoursePageBtn as ElementHandle<Element>).click();
+        await delay(5); // await for the page to load
+
+        attemptCount++;
+        const rows = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr ') as
+            ElementHandle<HTMLTableRowElement>[];
+        HasCourses = rows.length > 1;
+        if (HasCourses) {
+            const btn = await rows[1].$('td');
+            btnExist = !!btn;
+        }
+
+        await delay(2000);
+    } while (/* attemptCount < 500 && HasCourses && !btnExist */ true); // test
+}
+
+export const shxt = async () => {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
@@ -22,6 +52,11 @@ export const shxt = async () => {
 
     await (await page.waitForSelector(`#ContentPlaceHolder1_BtnLoginNew`) as ElementHandle<Element>).click();
 
+    await page.waitForNavigation();
+    /* course adding btn attempt */
+    // await checkCourseAddBtn(page);
+    /* course adding btn attempt */
+    // if (HasCourses)
     page.waitForSelector(`#ContentPlaceHolder1_Button7`, { timeout: 5000 })
         .then(async switchBTN => {
             await (switchBTN as ElementHandle<Element>).click();
@@ -32,13 +67,14 @@ export const shxt = async () => {
                 waiting_try_count++;
                 courses = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
             } while (courses.length <= 1 && waiting_try_count < 100);
+            courses.shift();
             console.log('Found ' + chalk.green(courses.length - 1) + ' courses, please check.');
             console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
             if (!config.fullauto) console.log(`${chalk.yellow('[warning]')} you\'re ${chalk.yellow('not')} set to ${chalk.yellow('fullauto')}, this program will ${chalk.yellow('not add the courses')} for you`);
             if (Boolean(config.fullauto)) {
                 setTimeout(async () => {
                     console.log('Found scheduled course(s):');
-                    courses.slice(1).forEach(async tr => {
+                    courses.forEach(async tr => {
                         let backend_output = '';
                         const add_btn = await tr.$('input');
                         if (((await page.evaluate(add_btn => (add_btn as HTMLInputElement).className, add_btn)).includes('hide')))
@@ -61,5 +97,5 @@ export const shxt = async () => {
             process.exit(1);
         });
 
-    await delay(5 * 60 * 1000);
+    await delay(10 * 60 * 1000);
 }

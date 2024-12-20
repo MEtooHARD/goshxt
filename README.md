@@ -53,8 +53,15 @@ If not, it'll start adding immediately.
 And there's a listener for `'dialog'` event, this script will accept any dialogs.
 
 **Important:**  
-this script simply try clicking every available ![alt text](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) button from your pre-schedule list  
-**For the best case, please *DO NOT* make any *clashes* in your pre-schedule list.**  
+this script simply try clicking every available ![add_course_btn](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) button from your pre-schedule list  
+**For the best case, please *DO NOT make any clashes* in your pre-schedule list.**  
+
+**Course System:**
+The system releases the add-course button ![add_course_btn](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) at least 1hr before you can add.  
+This script simply click them when the time comes.  
+You can click them all again, just in case. We've someone's local time not synced with the server so it couldn't add the courses in time.  
+(You won't see the adding failure/success prompts after you clicked the ![add_course_btn](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true) , since this script accepts all of them immediately)
+Before the script ends, there's 10min. You can check your status without additional login.  
 
 ---
 
