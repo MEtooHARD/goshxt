@@ -1,5 +1,10 @@
 # goshxt 
 
+### Major Update
+- Added straight log message for most of the events/stages.
+- Calls the add course function directly, it should be much faster than ever.
+- Added a handy Button for manual trigger adding all courses. At the right bottom corner, a blue button will be set after necessary process is finished.
+
 ### Necessary configurations:
 1. download and install `node.js`
 1. create `config.json` in
