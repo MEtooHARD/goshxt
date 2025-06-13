@@ -1,101 +1,129 @@
 import chalk from 'chalk';
-import puppeteer, { ElementHandle, Page } from 'puppeteer';
+import puppeteer, { ElementHandle, EvaluateFunc, Page } from 'puppeteer';
 import { delay } from './functions/misc';
 import config from '../config.json';
 
-let HasCourses = false;
-
-const checkCourseAddBtn = async (page: Page) => {
-    let attemptCount = 0;
-    let btnExist = false;
-    do {
-        /* reload pre sche course */
-        const PreSchedPageBTN = await page.$('#ContentPlaceHolder1_HyperLink6');
-        await PreSchedPageBTN?.click();
-        await delay(300);
-
-        const SchedPageBTN = await page.$('#ContentPlaceHolder1_HyperLink1');
-        await SchedPageBTN?.click();
-        await delay(200);
-        /* reload pre sche course */
-
-        const CoursePageBtn = await page.waitForSelector(`#ContentPlaceHolder1_Button7`, { timeout: 5000 });
-        await (CoursePageBtn as ElementHandle<Element>).click();
-        await delay(5); // await for the page to load
-
-        attemptCount++;
-        const rows = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr ') as
-            ElementHandle<HTMLTableRowElement>[];
-        HasCourses = rows.length > 1;
-        if (HasCourses) {
-            const btn = await rows[1].$('td');
-            btnExist = !!btn;
-        }
-
-        await delay(2000);
-    } while (/* attemptCount < 500 && HasCourses && !btnExist */ true); // test
+declare global {
+    interface Window {
+        bSS: () => Promise<void>;
+    }
 }
+
+let SSing: boolean = false;
+let dialogCT: number = 0;
+let SSCT: number = 0;
 
 export const shxt = async () => {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
-        args: ['--window-size=1920,1080']
+        args: ['--window-size=1080,720']
     });
-    const page = (await browser.newPage()).on('dialog', _ => _.accept());
+    const page = (await browser.newPage());
+
+    page.on('dialog', _ => {
+        _.accept();
+        console.log("AC MSG:", chalk.yellow(_.message()));
+        dialogCT++;
+    });
+    console.log("dialog fucker set");
 
     await page.goto('https://sys.ndhu.edu.tw/AA/CLASS/subjselect/Default.aspx');
+    console.log("site loaded");
 
     await (await page.waitForSelector(`#ContentPlaceHolder1_ed_StudNo`) as ElementHandle<Node>).type(config.student_id);
+    console.log("filled ID");
 
     await (await page.waitForSelector(`#ContentPlaceHolder1_ed_pass`) as ElementHandle<Node>).type(config.password);
+    console.log("filled PWD");
 
     await (await page.waitForSelector(`#ContentPlaceHolder1_BtnLoginNew`) as ElementHandle<Element>).click();
 
     await page.waitForNavigation();
-    /* course adding btn attempt */
-    // await checkCourseAddBtn(page);
-    /* course adding btn attempt */
-    // if (HasCourses)
+    console.log("logged in");
+
+    const calls: string[] = [];
+    const SSed: boolean = false;
+
+    const SS = async () => {
+        console.log(`======SS====== ${++SSCT}`);
+        if (SSing) {
+            console.log(chalk.yellow("SS is already running, pls wait"));
+        } else {
+            SSing = true;
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            await page.evaluate((calls) => {
+                for (const call of calls) {
+                    if (call === null) continue;
+                    const func = new Function(call);
+
+                    func();
+                }
+            }, calls);
+            SSing = false;
+        }
+        console.log(`======SS====== ${SSCT}`);
+    }
+
     page.waitForSelector(`#ContentPlaceHolder1_Button7`, { timeout: 5000 })
         .then(async switchBTN => {
             await (switchBTN as ElementHandle<Element>).click();
-            const timeLeft = (new Date(config.time)).getTime() - Date.now();
-            let courses: ElementHandle<HTMLTableRowElement>[] = [], waiting_try_count = 0, course_handled = 0;
+            console.log("switched to preselect");
+
+            console.log("fetching courses");
+            let courses: ElementHandle<HTMLInputElement>[] = [], waiting_try_count = 0;
             do {
                 await delay(25);
                 waiting_try_count++;
-                courses = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr');
+                courses = await page.$$('#ContentPlaceHolder1_grd_subjs > tbody > tr > td > input');
             } while (courses.length <= 1 && waiting_try_count < 100);
-            courses.shift();
-            console.log('Found ' + chalk.green(courses.length - 1) + ' courses, please check.');
-            console.log(`${chalk.yellow((timeLeft / 1000 / 60).toFixed(1).toString())} minuts till the open time. Get ready.`);
-            if (!config.fullauto) console.log(`${chalk.yellow('[warning]')} you\'re ${chalk.yellow('not')} set to ${chalk.yellow('fullauto')}, this program will ${chalk.yellow('not add the courses')} for you`);
-            if (Boolean(config.fullauto)) {
-                setTimeout(async () => {
-                    console.log('Found scheduled course(s):');
-                    courses.forEach(async tr => {
-                        let backend_output = '';
-                        const add_btn = await tr.$('input');
-                        if (((await page.evaluate(add_btn => (add_btn as HTMLInputElement).className, add_btn)).includes('hide')))
-                            backend_output += chalk.yellow('added');
-                        else {
-                            await (add_btn as ElementHandle<HTMLInputElement>).click();
-                            backend_output += chalk.green('new add');
-                        }
-                        console.log(backend_output + '\t' + (await tr.$$eval('td', x => x[1].innerText + '\t' + x[2].innerText)) + '\t');
-                        course_handled++;
-                    });
-                    // while (course_handled != courses.length - 1) await delay(100);
-                    console.log('\n' + chalk.yellow('hint: the ') + chalk.green('new add ') + chalk.yellow('may be a clashed one.' + '\n'
-                        + 'To be on the safe side, please CHECK AGAIN all the courses you want are added correctly.'));
-                }, timeLeft > 0 ? timeLeft : 0);
-            }
+            console.log("fetched", courses.length, "courses");
+
+            console.log("extract ss call");
+            calls.push(...(await Promise.all(courses.map(c => c.evaluate(e => e.getAttribute('onclick')))))
+                .filter(x => x !== null) as string[]);
+
+            console.log(`ss calls: \n\t${calls
+                .map(x => x.replace("return", "").trim())
+                .join('\n\t')}`
+            );
+
+            const timeLeft = (new Date(config.time)).getTime() - Date.now();
+            setTimeout(async () => {
+                if (SSed) await SS();
+                else console.log("scheduled SS skipped");
+            }, timeLeft > 0 ? timeLeft : 0);
+            console.log("SS will be executed in",
+                timeLeft > 0 ? `${Math.floor(timeLeft / 1000 / 60)} minutes` : "0 minutes");
+
+            /* trigger */
+            await page.exposeFunction('bSS', SS);
+            await page.evaluate(() => {
+                const ssButton = document.createElement('button');
+                ssButton.id = 'ssButton';
+                ssButton.textContent = 'SS';
+                ssButton.style.position = 'fixed';
+                ssButton.style.bottom = '10px';
+                ssButton.style.right = '10px';
+                ssButton.style.zIndex = '1000';
+                ssButton.style.padding = '10px 20px';
+                ssButton.style.backgroundColor = '#007bff';
+                ssButton.style.color = '#fff';
+                ssButton.style.border = 'none';
+                ssButton.style.borderRadius = '5px';
+                ssButton.style.cursor = 'pointer';
+
+                ssButton.onclick = () => { window.bSS(); };
+
+                document.body.appendChild(ssButton);
+            })
+            console.log("button insert");
+            /* trigger */
         })
         .catch(x => {
             console.log(chalk.red('The PASSWORD or ID you provided was wrong.'));
             process.exit(1);
-        });
+        })
 
-    await delay(10 * 60 * 1000);
+    await delay(20 * 60 * 1000);
 }
