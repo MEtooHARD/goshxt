@@ -24,6 +24,7 @@ Designed for sniping courses in NDHU course-select website
 - **goshxt** reads your `password` and `student_id` to login to the course website. And inspects your preselection to ~~kidnap~~ get necessary data of your ![add course button](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true)s.
 - If `fullauto` is `true`, **goshxt** *should* get all your preselected courses selected once the time hits.
 - **goshxt** also provides the <img src="https://github.com/594-666/goshxt/blob/main/SS_btn.jpg?raw=true" alt="SS button" height="25"/>, this button selects all your preselected courses. You can click it once you found that **goshxt** didn't trigger selecting on time. Or if you set `fullauto` to `false`, you'll need to select them by yourself, as if so **goshxt** won't trigger selecting.
+- **goshxt** uatomatically accepts any dialogs and logs the message in the console.
 - You should be able to test if **goshxt** runs properly at any time as the website is likely open 24/7.
 ---  
 
