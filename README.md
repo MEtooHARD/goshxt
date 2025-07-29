@@ -24,4 +24,20 @@ Designed for sniping courses in NDHU course-select website
 - **goshxt** reads your `password` and `student_id` to login to the course website. And inspects your preselection to ~~kidnap~~ get necessary data of your ![add course button](https://github.com/594-666/goshxt/blob/main/add_btn.png?raw=true)s.
 - If `fullauto` is `true`, **goshxt** *should* get all your preselected courses selected once the time hits.
 - **goshxt** also provides the <img src="https://github.com/594-666/goshxt/blob/main/SS_btn.jpg?raw=true" alt="SS button" height="25"/>, this button selects all your preselected courses. You can click it once you found that **goshxt** didn't trigger selecting on time. Or if you set `fullauto` to `false`, you'll need to select them by yourself, as if so **goshxt** won't trigger selecting.
-- You should be able to test if **goshxt** runs properly at any time as the website is likely open 24/7. Any problem please contact my github @MetooHARD or my discord @metoohard
+- You should be able to test if **goshxt** runs properly at any time as the website is likely open 24/7.
+---  
+
+###  see [goshxt demonstration](https://youtu.be/va9Spg4j-Mg)  (this is an out dated demo, but the main workflow is similar)
+## **Contributors:**
+- ## **script:** [MEtooHARD](https://github.com/MEtooHARD)
+- ## **video:** [ToiletKing](https://www.youtube.com/@ToiletKing)
+
+for any noun you don't know, just google or ask your csie classmates(though they may not know, either)  
+任何看不懂的名詞請google或找個資工系的同學問(他們可能也不會就是了)
+
+
+(或是你想加我discord: @metoohard)
+
+(來陪我玩啦)
+
+(來啦)
