@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=goshxt
+Comment=NDHU Course Registration Assistant
+Exec=bash -c 'cd "$(dirname "%k")" && if [ ! -x goshxt-linux ]; then chmod +x goshxt-linux; fi && ./goshxt-linux'
+Terminal=false
+Icon=utilities-terminal
+Categories=Utility;Education;

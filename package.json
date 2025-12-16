@@ -5,13 +5,32 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js",
+    "postinstall": "chmod +x start.sh install.sh || exit 0",
+    "build": "tsc",
+    "package:win": "pkg dist/index.js --targets node18-win-x64 --output goshxt.exe",
+    "package:mac": "pkg dist/index.js --targets node18-macos-x64 --output goshxt-mac",
+    "package:linux": "pkg dist/index.js --targets node18-linux-x64 --output goshxt-linux",
+    "package:all": "npm run package:win && npm run package:mac && npm run package:linux"
+  },
+  "bin": "dist/index.js",
+  "pkg": {
+    "assets": [
+      "public/**/*"
+    ],
+    "outputPath": "build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
     "puppeteer": "^23.11.1",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6"
   }
 }

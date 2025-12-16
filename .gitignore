@@ -1,5 +1,20 @@
 config.json
 
+# Build outputs and executables
+dist-release/
+dist-release-win/
+dist-release-mac/
+dist-release-linux/
+*.exe
+goshxt-mac
+goshxt-linux
+
+# Distribution archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
 # screenshots
 
 

@@ -1,3 +1,3 @@
-import { shxt } from "./shxt";
+import { startServer } from "./server";
 
-shxt();
+startServer();

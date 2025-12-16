@@ -1,5 +1,13 @@
 # goshxt 
 
+
+### Major Update (2025/12)
+made packages for WIN/Mac/Linux
+no installation of Node.js needed
+just start with single click
+ 
+---  
+
 ### Major Update
 - Added straight log message for most of the events/stages.
 - Calls the add course function directly, it should be much faster than ever.
