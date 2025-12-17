@@ -37,47 +37,47 @@
         console.log('Found course items:', rows.length - 1);
 
         plus_btns = [];
-        const courses_info = []; // {code, name, button}[]
+        window.courses_info = []; // 改為全局以便 execute 使用
         let max_code_len = 0;
 
         for (let i = 1; i < rows.length; i++) {
             const button = rows[i].querySelector('td > input');
             const code = rows[i].querySelector('td:nth-child(2)')?.textContent?.trim() || `Course ${i}`;
             const name = rows[i].querySelector('td:nth-child(3)')?.textContent?.trim() || 'Unnamed';
-            courses_info.push({ code, name, button });
+            window.courses_info.push({ code, name, button });
             if (name.length > max_code_len) max_code_len = name.length;
         }
 
-        console.log(LOG_PREFIX, `Found ${courses_info.length} courses`);
-        status_el.textContent = `Found ${courses_info.length} courses`;
+        console.log(LOG_PREFIX, `Found ${window.courses_info.length} courses`);
+        status_el.textContent = `Found ${window.courses_info.length} courses`;
 
-        if (courses_info.length === 0) {
+        if (window.courses_info.length === 0) {
             execute_bt.disabled = true;
             display_el.textContent = 'No courses found';
             show_toast('⚠️ No courses found', '#ffc107');
             return;
         }
 
-        for (const course of courses_info) {
+        for (const course of window.courses_info) {
             if (course.button && !course.button.className.includes('hide'))
                 plus_btns.push(course.button);
         }
 
-        display_el.innerHTML = courses_info.map(course => {
+        display_el.innerHTML = window.courses_info.map(course => {
             const hasButton = !!course.button && !course.button.className.includes('hide');
             const codeColor = hasButton ? '#28a745' : '#dc3545';
             return `<div class="course-item"><span class="code" style="color: ${codeColor}">${course.code}</span><span>${course.name}</span></div>`;
         }).join('');
 
-        if (courses_info.length > 0) {
+        if (window.courses_info.length > 0) {
             execute_bt.disabled = false;
-            show_toast(`📚 Found ${courses_info.length} courses`, '#28a745');
+            show_toast(`📚 Found ${window.courses_info.length} courses`, '#28a745');
         } else {
             show_toast('⚠️ No courses found', '#ffc107');
         }
     }
 
-    // 執行選課
+// 執行選課
     function execute_courses() {
         if (plus_btns.length === 0) {
             show_toast('⚠️ No courses to be added', '#ffc107');
@@ -90,24 +90,35 @@
         execute_bt.disabled = true;
         status_el.textContent = 'Executing...';
 
-        const results = [];
         let successCount = 0;
         let errorCount = 0;
+
+        const start = Date.now();
+
+        // 阻止中間的 PostBack 以加速
+        window.dispatchEvent(new CustomEvent('goshxt-setBlockPostBack', {
+            detail: { block: true }
+        }));
 
         // 直接點擊按鈕
         for (let i = 0; i < plus_btns.length; i++) {
             try {
                 plus_btns[i].click();
                 successCount++;
-                // results.push(`✓ Course ${i + 1}: Success`);
             } catch (e) {
                 errorCount++;
-                // results.push(`✗ Course ${i + 1}: Error - ${e.message}`);
                 console.error(LOG_PREFIX, 'Error clicking button:', e);
             }
         }
 
-        // display_el.textContent = results.join('\n');
+        // 恢復 PostBack 並執行最後一次刷新
+        window.dispatchEvent(new CustomEvent('goshxt-setBlockPostBack', {
+            detail: { block: false }
+        }));
+
+        const end = Date.now();
+        console.log(LOG_PREFIX, `Execution finished in ${(end - start)} ms`);
+
         console.log(LOG_PREFIX, 'Execution completed!');
         status_el.textContent = `Success click: ${successCount}/${errorCount + successCount}`;
         show_toast(`✅ Executed ${plus_btns.length} requests`, '#28a745');
