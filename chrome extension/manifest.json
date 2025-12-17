@@ -4,12 +4,13 @@
     "version": "1.0.0",
     "description": "Helps with NDHU course registration",
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "scripting"
     ],
     "content_scripts": [
         {
             "matches": [
-                "https://sys.ndhu.edu.tw/*"
+                "https://sys.ndhu.edu.tw/AA/CLASS/subjselect/course_sele.aspx"
             ],
             "js": [
                 "inject.js"
@@ -19,7 +20,7 @@
         },
         {
             "matches": [
-                "https://sys.ndhu.edu.tw/*"
+                "https://sys.ndhu.edu.tw/AA/CLASS/subjselect/course_sele.aspx"
             ],
             "css": [
                 "content.css"
