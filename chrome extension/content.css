@@ -1,0 +1,101 @@
+/* NDHU Helper Panel */
+#ndhu-helper-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: white;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+}
+
+#ndhu-helper-panel .title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+#ndhu-status {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+#ndhu-display {
+    max-height: 200px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #333;
+    font-family: monospace;
+}
+
+#ndhu-display:empty::before {
+    content: 'No data';
+    color: #999;
+    font-style: italic;
+}
+
+.course-item {
+    display: grid;
+    grid-template-columns: 65px 1fr;
+    gap: 10px;
+    margin-bottom: 2px;
+}
+
+.course-item .code {
+    font-family: monospace;
+}
+
+.ndhu-button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.ndhu-btn {
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ndhu-btn-fetch {
+    background: #28a745;
+}
+
+.ndhu-btn-execute {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.ndhu-btn-execute:not(:disabled) {
+    background: #dc3545;
+    cursor: pointer;
+}
+
+/* Toast Notification */
+.ndhu-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 99999;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: opacity 0.3s;
+}

@@ -1,0 +1,37 @@
+{
+    "manifest_version": 3,
+    "name": "NDHU Course Registration Helper",
+    "version": "1.0.0",
+    "description": "Helps with NDHU course registration",
+    "permissions": [
+        "activeTab"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://sys.ndhu.edu.tw/*"
+            ],
+            "js": [
+                "inject.js"
+            ],
+            "run_at": "document_start",
+            "world": "MAIN"
+        },
+        {
+            "matches": [
+                "https://sys.ndhu.edu.tw/*"
+            ],
+            "css": [
+                "content.css"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "NDHU Registration Helper"
+    }
+}

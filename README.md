@@ -1,5 +1,16 @@
 # goshxt 
 
+### Major Update (2025/12) - Chrome Extension
+Browser extension version now available!
+- No Node.js or Puppeteer needed
+- Runs directly in your browser
+- Manual control with Fetch & Execute buttons
+- Instant course scan
+- Auto-accepts all alerts
+
+To install: Load `chrome-extension` folder in `chrome://extensions/`
+
+---
 
 ### Major Update (2025/12)
 made packages for WIN/Mac/Linux
