@@ -1,5 +1,8 @@
 # goshxt 
 
+### Major Update (2026/1) - Chrome Extension is now available in the store!
+## Follow the [link](https://chromewebstore.google.com/detail/goshxt/pfhjplbmfdkhboelijplpmpdgpggcopk).
+
 ### Major Update (2025/12) - Chrome Extension
 Browser extension version now available!
 - No Node.js or Puppeteer needed
